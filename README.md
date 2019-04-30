@@ -2,6 +2,8 @@
 
 Implements support for Waterline ORM in Sails.
 
+NOTE: This was forked to help implement additional desired features. No Breaking changes whatsoever. Updates will always be merged.
+
 > This is a core hook in the Sails.js framework. You can override or disable it using your sailsrc file or environment variables. See [Concepts > Configuration](http://sailsjs.com/docs/concepts/configuration) for more information.
 
 ## Dependencies
