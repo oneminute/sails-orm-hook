@@ -1,9 +1,8 @@
-# sails-hook-orm
+# sails-orm-hook
 
 Implements support for Waterline ORM in Sails.
 
-> This is a core hook in the Sails.js framework.  You can override or disable it using your sailsrc file or environment variables.  See [Concepts > Configuration](http://sailsjs.com/docs/concepts/configuration) for more information.
-
+> This is a core hook in the Sails.js framework. You can override or disable it using your sailsrc file or environment variables. See [Concepts > Configuration](http://sailsjs.com/docs/concepts/configuration) for more information.
 
 ## Dependencies
 
@@ -12,7 +11,6 @@ In order for this hook to load, the following other hooks must have already fini
 - moduleloader
 - userconfig
 
-
 ## Dependents
 
 If this hook is disabled, in order for Sails to load, the following other core hooks must also be disabled:
@@ -20,50 +18,46 @@ If this hook is disabled, in order for Sails to load, the following other core h
 - blueprints
 - pubsub
 
-
 ## Purpose
 
 This hook's responsibilities are:
 
-
 ##### Load adapters
 
-When Sails loads, this hook calls out to `sails.modules.loadAdapters()` (exposed by the `moduleloader`), loading any custom adapters defined within the app.  It also loads adapters which are installed as dependencies of the app itself (i.e. in its `node_modules/` folder).  These adapters are used when instantiating Waterline.
-
+When Sails loads, this hook calls out to `sails.modules.loadAdapters()` (exposed by the `moduleloader`), loading any custom adapters defined within the app. It also loads adapters which are installed as dependencies of the app itself (i.e. in its `node_modules/` folder). These adapters are used when instantiating Waterline.
 
 ##### Load and hydrate models, then expose them as `sails.models.*`
+
 When Sails loads, this hook calls out to `sails.modules.loadModels()` (exposed by the `moduleloader`), loading model files from the app's models folder.
 
 ##### Prompt about auto-migration
+
 Since instantiating Waterline currently has the effect of auto-migrating existing data (dependending on the `migrate` configuration), the orm hook shows a prompt before instantiating Waterline if no `migrate` setting is explicitly configured.
 
-
 ##### Instantiate Waterline
+
 As mentioned above, since all configuration, models, and adapters are loaded, this hook can safely instantiate Waterline.
 
-
 ##### Expose hydrated models as `sails.models`
-It then passes them to Waterline to turn them into Model instances with all the expected methods like `.create()`, and then exposes them as `sails.models`.  Conventionally this models folder is `api/models/`, but it can be configured in `sails.config.paths`.
+
+It then passes them to Waterline to turn them into Model instances with all the expected methods like `.create()`, and then exposes them as `sails.models`. Conventionally this models folder is `api/models/`, but it can be configured in `sails.config.paths`.
 
 - Note that the set of hydrated models in the `sails.models` also includes Waterline models which were implicitly created as junctors (i.e. for any `collection` associations whose `via` does not point at a `model` association).
-- Also note that models are exposed on `sails.models` are keyed by their identities.  That is, if you have a model file `Wolf.js`, it will be available as `sails.models.wolf`.
-
+- Also note that models are exposed on `sails.models` are keyed by their identities. That is, if you have a model file `Wolf.js`, it will be available as `sails.models.wolf`.
 
 ##### Expose global variable for each model
+
 If enabled (`sails.config.globals.models` set to true), use the inferred `globalId` of each model to expose it as a global variable.
 
-
-
 ## Implicit Defaults
+
 This hook sets the following implicit default configuration on `sails.config`:
 
-
-| Property                                       | Type          | Default         |
-|------------------------------------------------|:-------------:|-----------------|
-| `sails.config.globals.models`                  | ((boolean))   | `true`          |
-| `sails.config.models.datastore`                | ((string))    | `default`   |
-| `sails.config.datastores.default.adapter`      | ((ref))    | `require('sails-disk')`    |
-
+| Property                                  |    Type     | Default                 |
+| ----------------------------------------- | :---------: | ----------------------- |
+| `sails.config.globals.models`             | ((boolean)) | `true`                  |
+| `sails.config.models.datastore`           | ((string))  | `default`               |
+| `sails.config.datastores.default.adapter` |   ((ref))   | `require('sails-disk')` |
 
 i.e.
 
@@ -96,29 +90,23 @@ i.e.
 }
 ```
 
-
 ## Events
 
 ##### `hook:orm:loaded`
 
 Emitted when this hook has been automatically loaded by Sails core, and triggered the callback in its `initialize` function.
 
-
 ##### `hook:orm:reload`
 
-This event is no longer emitted by this hook.  This event will likely be replaced by making `.reload()` a public function.
+This event is no longer emitted by this hook. This event will likely be replaced by making `.reload()` a public function.
 
 > This event is experimental and is likely to change in a future release.
-
 
 ##### `hook:orm:reloaded`
 
-Emitted when a reload is complete.  This event will likely be replaced by expecting a callback in `.reload()`.
+Emitted when a reload is complete. This event will likely be replaced by expecting a callback in `.reload()`.
 
 > This event is experimental and is likely to change in a future release.
-
-
-
 
 ## Methods
 
@@ -133,14 +121,11 @@ Reload the ORM hook, reloading models and adapters from disk, and reinstantiatin
 sails.hooks.orm.reload();
 ```
 
-
 > ##### API: Private
+>
 > - Please do not use this method in userland (i.e. in your app or even in a custom hook or other type of Sails plugin).
 > - Because it is a private API of a core hook, if you use this method in your code it may stop working or change without warning, at any time.
 > - If you would like to see a version of this method made public and its API stabilized, please open a [proposal](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#v-proposing-features-and-enhancements).
-
-
-
 
 #### sails.hooks.orm.teardown()
 
@@ -150,21 +135,17 @@ Call the `teardown()` method for adapters which have one, and which were previou
 sails.hooks.orm.teardown(cb);
 ```
 
-
 ###### Usage
 
-
-|     |          Argument           | Type                | Details
-| --- | --------------------------- | ------------------- | ----------------------------------------------------------------------------------
-| 1   |        **cb**               | ((function))        | Optional. Fires when the teardown process for the hook is complete.
-
+|     | Argument | Type         | Details                                                             |
+| --- | -------- | ------------ | ------------------------------------------------------------------- |
+| 1   | **cb**   | ((function)) | Optional. Fires when the teardown process for the hook is complete. |
 
 > ##### API: Private
+>
 > - Please do not use this method in userland (i.e. in your app or even in a custom hook or other type of Sails plugin).
 > - Because it is a private API of a core hook, if you use this method in your code it may stop working or change without warning, at any time.
 > - If you would like to see a version of this method made public and its API stabilized, please open a [proposal](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#v-proposing-features-and-enhancements).
-
-
 
 ## FAQ
 
@@ -178,10 +159,9 @@ This repo contains a hook, one of the building blocks Sails is made out of.
 
 This hook is a dependency of Sails core as of Sails v0.12, in Sails v1, and beyond.
 
-
 #### Can I disable this hook?
 
-Yes.  To disable this hook, merge the following JSON into your project's `.sailsrc` file:
+Yes. To disable this hook, merge the following JSON into your project's `.sailsrc` file:
 
 ```json
 {
@@ -193,27 +173,22 @@ Yes.  To disable this hook, merge the following JSON into your project's `.sails
 
 #### Can I override this hook to use a different ORM like Mongoose or Bookshelf instead of Waterline?
 
-Yes.  To override this hook, define your replacement hook with `identity: orm` in your `.sailsrc` file or your app's `api/hooks/` directory.
-
+Yes. To override this hook, define your replacement hook with `identity: orm` in your `.sailsrc` file or your app's `api/hooks/` directory.
 
 ## Help
 
 If you have further questions or are having trouble, click [here](http://sailsjs.com/support).
 
-
-## Bugs &nbsp; [![NPM version](https://badge.fury.io/js/sails-hook-orm.svg)](http://npmjs.com/package/sails-hook-orm)
+## Bugs &nbsp; [![NPM version](https://badge.fury.io/js/sails-orm-hook.svg)](http://npmjs.com/package/sails-orm-hook)
 
 To report a bug, [click here](http://sailsjs.com/bugs).
-
 
 ## Contributing
 
 Please observe the guidelines and conventions laid out in the [Sails project contribution guide](http://sailsjs.com/documentation/contributing) when opening issues or submitting pull requests.
 
-[![NPM](https://nodei.co/npm/sails-hook-orm.png?downloads=true)](http://npmjs.com/package/sails-hook-orm)
-
+[![NPM](https://nodei.co/npm/sails-orm-hook.png?downloads=true)](http://npmjs.com/package/sails-orm-hook)
 
 ## License
 
 The [Sails framework](http://sailsjs.com) is free and open-source under the [MIT License](http://sailsjs.com/license).
-
