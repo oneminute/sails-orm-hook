@@ -34,7 +34,7 @@
     "prompt": "0.2.14",
     "sails-disk": "^1.1.0",
     "waterline-utils": "^1.0.0",
-    "waternile": "^0.14.0-15"
+    "waternile": "^0.14.0-16"
   },
   "sails": {
     "isHook": true,
