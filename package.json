@@ -1,6 +1,6 @@
 {
   "name": "sails-orm-hook",
-  "version": "3.0.0-10",
+  "version": "3.0.0-11",
   "description": "The ORM hook from Sails core.",
   "main": "index.js",
   "scripts": {
