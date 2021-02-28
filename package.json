@@ -1,6 +1,6 @@
 {
   "name": "sails-orm-hook",
-  "version": "3.14.0",
+  "version": "3.15.0",
   "description": "The ORM hook from Sails core.",
   "main": "index.js",
   "scripts": {
@@ -35,7 +35,7 @@
     "prompt": "0.2.14",
     "sails-disk": "^1.1.0",
     "waterline-utils": "^1.0.0",
-    "waternile": "^0.29.0"
+    "waternile": "^0.30.0"
   },
   "sails": {
     "isHook": true,
